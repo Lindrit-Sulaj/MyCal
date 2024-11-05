@@ -10,7 +10,7 @@ function Navbar() {
   const { darkMode, toggleMode } = useDarkMode()
 
   return (
-    <nav className='px-4 md:px-8 lg:px-10 absolute top-8 z-50 w-full'>
+    <nav className='px-8 md:px-12 lg:px-14 absolute top-8 z-50 w-full'>
       <div className="w-full max-w-screen-xl mx-auto flex justify-between items-center bg-neutral-100 shadow-sm border dark:bg-neutral-900 pl-6 py-3 pr-3 rounded-lg">
         <Link href="/" className='font-bold text-xl'>
           MyCal
@@ -26,10 +26,10 @@ function Navbar() {
               </svg>
             }
           </Button>
-          <Link href='/'>
+          <Link href='/sign-up'>
             <Button variant="outline">Sign up</Button>
           </Link>
-          <Link href='/'>
+          <Link href='/log-in'>
             <Button>Log in</Button>
           </Link>
         </div>
