@@ -1,11 +1,12 @@
 "use client"
 
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import React from 'react'
 import { useDarkMode } from '@/lib/useTheme'
 import { Button } from './ui/button'
 
-export default function Navbar() {
+function Navbar() {
   const { darkMode, toggleMode } = useDarkMode()
 
   return (
@@ -36,3 +37,7 @@ export default function Navbar() {
     </nav>
   )
 }
+
+export default dynamic(() => Promise.resolve(Navbar), {
+  ssr: false
+})

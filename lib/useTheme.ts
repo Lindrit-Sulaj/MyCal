@@ -7,8 +7,9 @@ export function useDarkMode() {
     if (typeof window !== "undefined") {
       const savedMode = localStorage.getItem('darkMode');
       return savedMode ? JSON.parse(savedMode) : false;
+    } else {
+      return false;
     };
-    return false;
   })
 
   useEffect(() => {

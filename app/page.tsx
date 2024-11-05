@@ -1,9 +1,10 @@
+import Link from "next/link";
+
 import Navbar from "@/components/navbar";
 import AnimatedShinyText from "@/components/ui/animated-shiny-text";
 import { Button } from "@/components/ui/button";
 import GridPattern from "@/components/ui/grid-pattern";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 // font-[family-name:var(--font-geist-sans)]
 
