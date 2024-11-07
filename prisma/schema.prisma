@@ -1,0 +1,155 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+ 
+generator client {
+  provider = "prisma-client-js"
+}
+ 
+model User {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?         @unique
+  username      String?
+  timezone String?
+
+  emailVerified DateTime?
+  hashedPassword String?
+  image         String?
+
+  eventTypes EventType[]
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EventType {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  name String
+  duration Int
+
+  dateRange DateRange?
+  location Location?
+  afterBooking AfterBooking
+  questions Questions[]
+  description String?
+  color String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+type Questions {
+  question String
+  required Boolean 
+  answerType AnswerType
+  options String?
+}
+
+type AfterBooking {
+  event AfterBookingEvent
+  redirectUrl String?
+}
+
+type DateRange {
+  type DateRangeType
+  value String
+}
+
+type Location {
+  type LocationType
+  value String
+}
+
+enum AfterBookingEvent {
+  MYCAL_CONFIRMATION_PAGE
+  EXTERNAL_REDIRECT
+}
+
+enum DateRangeType {
+  DATE_RANGE
+  CALENDAR_DAYS
+  INDEFINITELY
+}
+
+enum LocationType {
+  PHONE_CALL
+  IN_PERSON_MEETING
+}
+
+enum AnswerType {
+  MULTIPLE_LINES
+  ONE_LINE
+  PHONE_NUMBER
+  EMAIL
+  RADIO_BUTTONS
+  CHECKBOXES
+  DROPDOWN
+}
+ 
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+}
+ 
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@unique([identifier, token])
+}
+ 
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @id @map("_id")
+  userId               String  @db.ObjectId
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([userId, credentialID])
+}

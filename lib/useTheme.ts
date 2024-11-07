@@ -19,7 +19,9 @@ export function useDarkMode() {
       document.documentElement.classList.remove('dark');
     };
 
-    localStorage.setItem('darkMode', JSON.stringify(darkMode))
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+
+    console.log(darkMode)
   }, [darkMode]);
 
   const toggleMode = () => setDarkMode(!darkMode);
