@@ -25,6 +25,7 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
  
+  bookings Booking[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -45,6 +46,7 @@ model EventType {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  bookings Booking[]
   user User @relation(fields: [userId], references: [id])
 }
 
@@ -62,7 +64,7 @@ type AfterBooking {
 
 type DateRange {
   type DateRangeType
-  value String
+  value String?
 }
 
 type Location {
@@ -96,6 +98,19 @@ enum AnswerType {
   DROPDOWN
 }
  
+model Booking {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  eventTypeId String @db.ObjectId
+  userId String @db.ObjectId
+
+  date DateTime
+  duration Int
+  meetingNotes String?
+
+  user User @relation(fields: [userId], references: [id])
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+}
+
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
