@@ -48,14 +48,14 @@ const handler = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, image: user.image }
-    },
-    async session({ session, token }) {
-      return { ...session, image: token.image }
-    }
-  },
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     return { ...token, image: user.image }
+  //   },
+  //   async session({ session, token }) {
+  //     return { ...session, image: token.image }
+  //   }
+  // },
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt'

@@ -1,5 +1,6 @@
 "use client"
 
+import { useAuth } from '@/app/auth-provider'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import React from 'react'
@@ -8,6 +9,10 @@ import { Button } from './ui/button'
 
 function Navbar() {
   const { darkMode, toggleMode } = useDarkMode()
+
+  const auth = useAuth();
+
+  console.log(auth)
 
   return (
     <nav className='px-8 md:px-12 lg:px-14 absolute top-8 z-50 w-full'>
@@ -26,12 +31,20 @@ function Navbar() {
               </svg>
             }
           </Button>
-          <Link href='/sign-up'>
-            <Button variant="outline">Sign up</Button>
-          </Link>
-          <Link href='/log-in'>
-            <Button>Log in</Button>
-          </Link>
+          {auth?.status === "unauthenticated" ? (
+            <>
+              <Link href='/sign-up'>
+                <Button variant="outline">Sign up</Button>
+              </Link>
+              <Link href='/log-in'>
+                <Button>Log in</Button>
+              </Link>
+            </>
+          ) : (
+            <Link href="/account">
+              <Button>Dashboard</Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

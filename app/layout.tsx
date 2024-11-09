@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google'
-import localFont from "next/font/local";
 import "./globals.css";
+
+import AuthProvider from "./auth-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
 
@@ -20,7 +22,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-[family-name:var(--font-inter)]`}
       >
-        {children}
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
