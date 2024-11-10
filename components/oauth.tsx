@@ -3,10 +3,15 @@
 import React from 'react'
 import { signIn } from 'next-auth/react'
 
+import { navigate } from '@/app/actions/navigate'
 import { Separator } from './ui/separator'
 import { Button } from './ui/button'
 
 export default function OAuth({ className }: { className?: string }) {
+  const signInWithGoogle = async () => {
+    return await signIn('google', { callbackUrl: '/' })
+  }
+  
   return (
     <div className={className}>
       <div className='flex items-center gap-x-4 my-4'>
@@ -14,7 +19,7 @@ export default function OAuth({ className }: { className?: string }) {
         <p className='text-sm uppercase text-foreground/80 whitespace-nowrap'>Or continue with</p>
         <Separator className='w-10 grow' />
       </div>
-      <Button className='w-full' onClick={() => signIn('google')}>
+      <Button className='w-full' onClick={signInWithGoogle}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="xMidYMid"
