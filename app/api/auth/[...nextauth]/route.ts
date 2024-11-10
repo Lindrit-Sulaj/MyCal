@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from 'next-auth/providers/google'
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from 'bcryptjs'
 
@@ -7,6 +8,10 @@ import { prisma } from "@/lib/prisma";
 
 const handler = NextAuth({
   providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+    }),
     Credentials({
       id: 'credentials',
       name: 'credentials',
