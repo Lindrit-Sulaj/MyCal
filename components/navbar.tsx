@@ -6,6 +6,8 @@ import Link from 'next/link'
 import React from 'react'
 import { useDarkMode } from '@/lib/useTheme'
 import { Button } from './ui/button'
+import { signIn, signOut } from 'next-auth/react'
+import { LogOut } from 'lucide-react'
 
 function Navbar() {
   const { darkMode, toggleMode } = useDarkMode()
@@ -41,9 +43,14 @@ function Navbar() {
               </Link>
             </>
           ) : (
-            <Link href="/account">
-              <Button>Dashboard</Button>
-            </Link>
+            <>
+              <Link href="/account">
+                <Button>Dashboard</Button>
+              </Link>
+              <Button variant="outline" size="icon" onClick={() => signOut()}>
+                <LogOut />
+              </Button>
+            </>
           )}
         </div>
       </div>

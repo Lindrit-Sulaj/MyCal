@@ -78,7 +78,7 @@ export async function createVerification(userId: string) {
   if (!verificationToken) throw new Error("Something went wrong when creating the verification token.")
 
   const email = await resend.emails.send({
-    from: 'MyCal <onboarding@resend.dev>',
+    from: 'MyCal <contact@lindritsulaj.com>',
     to: user?.email!,
     subject: 'Verification Code for MyCal',
     html: `

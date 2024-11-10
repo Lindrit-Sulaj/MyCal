@@ -89,7 +89,7 @@ export default function SignUp() {
     const verifiedUser = await verifyEmail(user?.id!, verificationId, verificationCode);
 
     if (verifiedUser) {
-      const signedIn = await signIn('credentials', { email: user?.email!, password, callbackUrl: '/' });
+      const signedIn = await signIn('credentials', { email: user?.email!, password, redirect: false });
 
       if (signedIn?.ok) {
         console.log("Signed in")

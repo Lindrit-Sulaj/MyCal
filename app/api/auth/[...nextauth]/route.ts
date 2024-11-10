@@ -21,6 +21,8 @@ const handler = NextAuth({
         }
       },
       async authorize(credentials: any) {
+        console.log("AUTHENTICATION STARTED")
+
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Email or password is missing")
         }
@@ -60,9 +62,6 @@ const handler = NextAuth({
   session: {
     strategy: 'jwt'
   },
-  pages: {
-    signIn: '/log-in'
-  }
 })
 
 export { handler as GET, handler as POST }

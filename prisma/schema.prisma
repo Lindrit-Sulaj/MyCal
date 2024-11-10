@@ -108,8 +108,8 @@ model Booking {
   duration     Int
   meetingNotes String?
 
-  user      User      @relation(fields: [userId], references: [id])
-  eventType EventType @relation(fields: [eventTypeId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventType EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
 }
 
 model Account {
