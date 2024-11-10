@@ -43,6 +43,8 @@ export default function SignUp() {
   async function handleCreateAccount(formData: FormData) {
     setLoading(true);
 
+    console.log('Loading', loading)
+
     const rawFormData = {
       name: formData.get('name') as string,
       username: formData.get('username') as string,
@@ -67,6 +69,8 @@ export default function SignUp() {
       })
       .finally(() => {
         setLoading(false);
+        
+        console.log("Loading finished", loading)
       });
 
     if (user) {
@@ -100,7 +104,7 @@ export default function SignUp() {
 
   return (
     <main>
-      <section className="p-4 h-screen">
+      <section className="p-3 md:p-4 h-screen">
         <div className="bg-neutral-100 dark:bg-neutral-950 border w-full h-full rounded-xl flex flex-col items-center relative z-10 px-4">
           <div className="py-8">
             <Link href="/" className='font-bold text-2xl'>MyCal</Link>
@@ -237,7 +241,7 @@ export default function SignUp() {
             x={-1}
             y={-1}
             className={cn(
-              "stroke-neutral-500/20 dark:stroke-neutral-700/30 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
+              "stroke-neutral-400/20 lg:stroke-neutral-500/20 dark:stroke-neutral-700/20 lg:dark:stroke-neutral-700/30 [mask-image:radial-gradient(400px_circle_at_center,white,transparent)]  lg:[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
             )}
           />
         </div>

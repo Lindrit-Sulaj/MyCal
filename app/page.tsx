@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <main>
       <Navbar />
-      <section className="p-4">
+      <section className="p-3 md:p-4">
         <div className="w-full pt-48 pb-36 rounded-xl relative border bg-neutral-50 dark:bg-neutral-950 dark:text-white px-4">
           <div className="z-10 relative flex flex-col items-center">
             <div className={cn("group rounded-full border border-white/5 bg-neutral-900 text-base text-white transition-all ease-in hover hover:cursor-pointer hover:bg-neutral-800")}>
@@ -35,7 +35,7 @@ export default async function Home() {
             x={-1}
             y={-1}
             className={cn(
-              "stroke-neutral-400/30 dark:stroke-neutral-700/30 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
+              "stroke-neutral-400/20 lg:stroke-neutral-400/30 dark:stroke-neutral-700/30 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
             )}
           />
         </div>
