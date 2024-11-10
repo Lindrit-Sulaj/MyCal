@@ -11,7 +11,10 @@ const handler = NextAuth({
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      checks: ['none']
+      checks: ['none'],
+      authorization: {
+        params: {}
+      }
     }),
     Credentials({
       id: 'credentials',
