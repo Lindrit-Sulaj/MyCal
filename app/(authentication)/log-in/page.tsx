@@ -21,19 +21,40 @@ export default function LogIn() {
 
   async function handleSignIn(e: FormEvent) {
     e.preventDefault();
-    
+
     setLoading(true);
 
-    const user = await signIn('credentials', { email, password, redirect: false });
+    const signedInUser = await signIn('credentials', { email, password, redirect: false })
+    // .then(() => {
+    //   toast({
+    //     title: 'Signed in successfully',
+    //     description: 'Head over to the dashboard to start using your account'
+    //   })
+    //   navigate('/')
+    // })
+    // .catch(err => {
+    //   toast({
+    //     title: err.message
+    //   })
+    // })
+    // .finally(() => {
+    //   setLoading(false)
+    // });
 
-    if (user) {
-      setLoading(false);
+    if (signedInUser?.ok) {
       toast({
         title: 'Signed in successfully',
         description: 'Head over to the dashboard to start using your account'
       })
       navigate('/')
+    } else if (signedInUser?.error) {
+      toast({
+        title: signedInUser.error,
+        variant: 'destructive'
+      })
     }
+
+    setLoading(false);
   }
 
   return (
