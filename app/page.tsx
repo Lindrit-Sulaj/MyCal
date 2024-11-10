@@ -35,7 +35,7 @@ export default async function Home() {
             x={-1}
             y={-1}
             className={cn(
-              "stroke-neutral-400/20 lg:stroke-neutral-400/30 dark:stroke-neutral-700/30 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
+              "stroke-neutral-400/20 lg:stroke-neutral-400/30 dark:stroke-neutral-700/20 lg:dark:stroke-neutral-700/30 [mask-image:radial-gradient(400px_circle_at_center,white,transparent)] lg:[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
             )}
           />
         </div>
