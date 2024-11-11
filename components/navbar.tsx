@@ -44,7 +44,7 @@ function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/account">
+              <Link href="/dashboard">
                 <Button>Dashboard</Button>
               </Link>
               <Button variant="outline" size="icon" onClick={() => signOut()}>
