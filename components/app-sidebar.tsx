@@ -3,7 +3,7 @@
 import Link from "next/link"
 
 import { useAuth } from "@/app/auth-provider"
-import { Calendar, ChartBarIcon, ChevronDown, Clock, Copy, ExternalLink, LinkIcon, LogOut, Settings, User } from "lucide-react"
+import { Calendar, ChartBarIcon, ChevronDown, Clock, Copy, ExternalLink, LinkIcon, LogOut, Palette, Settings, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -52,6 +52,11 @@ export function AppSidebar() {
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
                 <Link href="/">
+                  <Palette /> Appearance
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" asChild>
+                <Link href="/">
                   <Settings /> Settings
                 </Link>
               </DropdownMenuItem>
@@ -75,7 +80,7 @@ export function AppSidebar() {
               <LinkIcon /> Event Types
             </Button>
           </Link>
-          <Link href="/" className="block my-[2px]">
+          <Link href="/dashboard/bookings" className="block my-[2px]">
             <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start">
               <Calendar /> Bookings
             </Button>
