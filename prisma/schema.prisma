@@ -14,12 +14,14 @@ model User {
   email    String? @unique
   username String?
   timezone String?
+  description String?
 
   emailVerified  DateTime?
   hashedPassword String?
   image          String?
 
   eventTypes    EventType[]
+  availability Availability[]
   accounts      Account[]
   sessions      Session[]
   verificationTokens VerificationToken[]
@@ -31,9 +33,38 @@ model User {
   updatedAt DateTime  @updatedAt
 }
 
+model Availability {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  name String
+
+  availableDays String[]
+
+  eventTypes EventType[]
+  user User @relation(fields: [userId], references: [id])
+}
+
+type AvailableDays {
+  day DayOfWeek
+  isAvailable Boolean
+  value String?
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model EventType {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   userId   String @db.ObjectId
+  availabilityId String @db.ObjectId
+  url String @unique
   name     String
   duration Int
 
@@ -43,11 +74,13 @@ model EventType {
   questions    Questions[]
   description  String?
   color        String?
+  hidden Boolean?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   bookings Booking[]
+  availability Availability @relation(fields: [availabilityId], references: [id])
   user     User      @relation(fields: [userId], references: [id])
 }
 
@@ -107,9 +140,15 @@ model Booking {
   date         DateTime
   duration     Int
   meetingNotes String?
+  data BookingData[]
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventType EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+}
+
+type BookingData {
+  label String
+  value String
 }
 
 model Account {

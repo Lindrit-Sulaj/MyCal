@@ -75,7 +75,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
 
-          <Link href="/" className="block my-[2px]">
+          <Link href="/dashboard/event-types" className="block my-[2px]">
             <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start">
               <LinkIcon /> Event Types
             </Button>

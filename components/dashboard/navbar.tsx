@@ -17,7 +17,7 @@ export default function DashboardNavbar() {
   const path = usePathname();
 
   return (
-    <nav className='sticky top-0 bg-white w-full border-b px-6 py-3'>
+    <nav className='sticky top-0 bg-white dark:bg-neutral-900 w-full border-b px-6 py-3 flex justify-between'>
       <div className='flex items-center gap-x-4'>
         <SidebarTrigger />
         <span>|</span>
@@ -44,6 +44,9 @@ export default function DashboardNavbar() {
         {/* {path.split('/').map(p => (
 
         ))} */}
+      </div>
+      <div>
+        
       </div>
     </nav>
   )

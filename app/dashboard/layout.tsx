@@ -9,7 +9,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <AppSidebar />
       <main className='w-full'>
         <DashboardNavbar />
-        { children }
+        <div className="p-6">
+          {children}
+        </div>
       </main>
     </SidebarProvider>
   )
