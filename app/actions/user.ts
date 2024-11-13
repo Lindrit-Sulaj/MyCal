@@ -43,7 +43,20 @@ export async function createUser(data: UserCreate) {
       username,
       timezone,
       hashedPassword,
-      name
+      name,
+      schedules: {
+        create: [
+          { name: 'Working Hours', availableDays: [
+            { day: 'MONDAY', value: '8:00 - 17:00' },
+            { day: 'TUESDAY', value: '8:00 - 17:00' },
+            { day: 'WEDNESDAY', value: '8:00 - 17:00' },
+            { day: 'THURSDAY', value: '8:00 - 17:00' },
+            { day: 'FRIDAY', value: '8:00 - 17:00' },
+            { day: 'SATURDAY', value: '' },
+            { day: 'SUNDAY', value: '' },
+          ]}
+        ]
+      }
     }
   });
 

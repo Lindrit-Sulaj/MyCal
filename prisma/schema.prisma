@@ -21,7 +21,7 @@ model User {
   image          String?
 
   eventTypes    EventType[]
-  availability Availability[]
+  schedules Schedule[]
   accounts      Account[]
   sessions      Session[]
   verificationTokens VerificationToken[]
@@ -33,12 +33,12 @@ model User {
   updatedAt DateTime  @updatedAt
 }
 
-model Availability {
+model Schedule {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @db.ObjectId
   name String
 
-  availableDays String[]
+  availableDays AvailableDays[]
 
   eventTypes EventType[]
   user User @relation(fields: [userId], references: [id])
@@ -46,7 +46,6 @@ model Availability {
 
 type AvailableDays {
   day DayOfWeek
-  isAvailable Boolean
   value String?
 }
 
@@ -63,7 +62,7 @@ enum DayOfWeek {
 model EventType {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   userId   String @db.ObjectId
-  availabilityId String @db.ObjectId
+  scheduleId String @db.ObjectId
   url String @unique
   name     String
   duration Int
@@ -80,7 +79,7 @@ model EventType {
   updatedAt DateTime @updatedAt
 
   bookings Booking[]
-  availability Availability @relation(fields: [availabilityId], references: [id])
+  schedule Schedule @relation(fields: [scheduleId], references: [id])
   user     User      @relation(fields: [userId], references: [id])
 }
 

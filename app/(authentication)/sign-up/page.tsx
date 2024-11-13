@@ -23,6 +23,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import OAuth from '@/components/oauth'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 export default function SignUp() {
   const { toast } = useToast();
@@ -57,7 +58,7 @@ export default function SignUp() {
     })
       .catch((err) => {
         const [title, description] = err.message.split('|');
-        
+
         toast({
           title,
           description
@@ -65,7 +66,7 @@ export default function SignUp() {
       })
       .finally(() => {
         setLoading(false);
-        
+
         console.log("Loading finished", loading)
       });
 
@@ -102,7 +103,7 @@ export default function SignUp() {
   return (
     <main>
       <section className="p-3 md:p-4 h-screen">
-        <div className="bg-neutral-100 dark:bg-neutral-950 border w-full h-full rounded-xl flex flex-col items-center relative z-10 px-4">
+        <div className="bg-neutral-100 dark:bg-neutral-950 border w-full h-full rounded-xl flex flex-col items-center relative z-10 px-4 pb-8">
           <div className="py-8">
             <Link href="/" className='font-bold text-2xl'>MyCal</Link>
           </div>
