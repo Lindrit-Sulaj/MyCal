@@ -24,7 +24,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <AppSidebar />
       <main className='w-full'>
         <DashboardNavbar />
-        <div className="p-6">
+        <div className="p-6 lg:p-8">
           {children}
         </div>
       </main>

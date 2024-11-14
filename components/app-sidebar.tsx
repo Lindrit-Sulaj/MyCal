@@ -85,7 +85,7 @@ export function AppSidebar() {
               <Calendar /> Bookings
             </Button>
           </Link>
-          <Link href="/" className="block my-[2px]">
+          <Link href="/dashboard/availability/" className="block my-[2px]">
             <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start">
               <Clock /> Availability
             </Button>

@@ -95,7 +95,7 @@ export default function SignUp() {
 
       if (signedIn?.ok) {
         console.log("Signed in")
-        navigate('/')
+        navigate('/dashboard')
       }
     }
   }

@@ -31,7 +31,7 @@ export default function LogIn() {
         title: 'Signed in successfully',
         description: 'Head over to the dashboard to start using your account'
       })
-      navigate('/')
+      navigate('/dashboard')
     } else if (signedInUser?.error) {
       toast({
         title: signedInUser.error,

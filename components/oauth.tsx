@@ -9,7 +9,7 @@ import { Button } from './ui/button'
 
 export default function OAuth({ className }: { className?: string }) {
   const signInWithGoogle = async () => {
-    return await signIn('google', { callbackUrl: '/' })
+    return await signIn('google', { callbackUrl: '/dashboard' })
   }
   
   return (

@@ -6,10 +6,22 @@ import { getUser } from "./user"
 
 type AvailableDays = { day: DayOfWeek, value?: string }[] | 'default'
 
+export async function getSchedules() {
+  const user = await getUser();
+
+  if (!user) throw new Error("Not authorized")
+
+  return await prisma.schedule.findMany({
+    where: {
+      userId: user.id
+    }
+  })
+}
+
 export async function createSchedule({ name, availableDays }: { name?: string, availableDays: AvailableDays }) {
   const user = await getUser();
 
-  if (!user) throw new Error("User not authorized")
+  if (!user) throw new Error("Not authorized")
   
   if (availableDays === 'default') {
     return await prisma.schedule.create({
