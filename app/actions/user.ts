@@ -1,13 +1,36 @@
 'use server'
 
 import bcrypt from 'bcryptjs'
+import { getServerSession } from 'next-auth'
 import { Resend } from 'resend'
 
 import { prisma } from '@/lib/prisma'
+import { options } from '../api/auth/[...nextauth]/options'
+import { User } from '@prisma/client'
+import { createSchedule } from './schedule'
 
 type UserCreate = { name: string, email: string, timezone: string, password: string, username: string }
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
+export async function getSession() {
+  return await getServerSession(options)
+}
+
+export async function getUser() {
+  const session = await getSession();
+
+  if (!session) throw new Error("User not authenticated");
+
+  return await prisma.user.findUnique({
+    where: {
+      email: session.user?.email as string
+    },
+    include: {
+      schedules: true
+    }
+  })
+}
 
 export async function createUser(data: UserCreate) {
   const { name, email, timezone, username, password } = data;
@@ -61,6 +84,45 @@ export async function createUser(data: UserCreate) {
   });
 
   return user;
+}
+
+export async function editUser({ data, usernameRequired }: { data: Partial<Pick<User, 'username' | 'description' | 'description' | 'timezone' | 'image' | 'name'>>, usernameRequired?: boolean }) {
+  const session = await getSession();
+
+  if (!session) throw new Error("Not authorized");
+
+  if (usernameRequired && !data.username) throw new Error('Username should not be left empty')
+
+  if (data.username) {
+    const URLValidRegex = /^[a-zA-Z0-9._-]*$/
+    if (!URLValidRegex.test(data.username)) throw new Error("Username contains invalid characters")
+
+    const usernameTaken = await prisma.user.findFirst({
+      where: {
+        username: data.username
+      }
+    })
+
+    if (usernameTaken) throw new Error("Username is taken. Please choose another one!");
+  }
+
+  const user = await prisma.user.update({
+    where: {
+      email: session.user?.email as string
+    },
+    data: {
+      ...data
+    },
+    include: {
+      schedules: true
+    }
+  })
+
+  if (user.schedules.length === 0) {
+    await createSchedule({ availableDays: 'default' });
+  }
+
+  return true;
 }
 
 export async function createVerification(userId: string) {

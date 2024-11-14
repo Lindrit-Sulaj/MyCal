@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import { useDarkMode } from '@/lib/useTheme'
 import { SidebarTrigger } from '../ui/sidebar'
 import {
   Breadcrumb,
@@ -15,6 +16,8 @@ import {
 
 export default function DashboardNavbar() {
   const path = usePathname();
+
+  const { darkMode, toggleMode } = useDarkMode();
 
   return (
     <nav className='sticky top-0 bg-white dark:bg-neutral-900 w-full border-b px-6 py-3 flex justify-between'>

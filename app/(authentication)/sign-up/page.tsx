@@ -131,7 +131,7 @@ export default function SignUp() {
                     </div>
                     <div className="my-2">
                       <Label>Timezone</Label>
-                      <Input placeholder='Your timezone' disabled value={timeZone} className='mt-1' type="email" />
+                      <Input placeholder='Your timezone' disabled value={timeZone} className='mt-1' type="text" />
                     </div>
                     <div className="my-2">
                       <Label>Password</Label>
