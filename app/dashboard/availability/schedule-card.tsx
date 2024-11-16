@@ -18,7 +18,7 @@ export default function ScheduleCard({ workDays, s, i, timezone }: {
   s: {
     id: string;
     name: string;
-    isDefault: boolean | undefined;
+    isDefault: boolean | null;
     userId: string;
     availableDays: {
       day: DayOfWeek;
