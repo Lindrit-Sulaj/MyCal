@@ -30,7 +30,7 @@ export default function CreateSchedule() {
 
     if (schedule) {
       toast({
-        title: 'Schedule created',
+        title: `Schedule "${name}" created`,
       })
 
       navigate(`/dashboard/availability/${schedule.id}`)

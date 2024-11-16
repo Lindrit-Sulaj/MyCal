@@ -20,7 +20,7 @@ export default function DashboardNavbar() {
   const { darkMode, toggleMode } = useDarkMode();
 
   return (
-    <nav className='sticky top-0 bg-white dark:bg-neutral-900 w-full border-b px-6 py-3 flex justify-between'>
+    <nav className='sticky top-0 z-10 bg-white dark:bg-neutral-900 w-full border-b px-6 py-3 flex justify-between'>
       <div className='flex items-center gap-x-4'>
         <SidebarTrigger />
         <span>|</span>

@@ -70,11 +70,11 @@ export async function createUser(data: UserCreate) {
       schedules: {
         create: [
           { name: 'Working Hours', isDefault: true, availableDays: [
-            { day: 'MONDAY', value: '8:00 - 17:00' },
-            { day: 'TUESDAY', value: '8:00 - 17:00' },
-            { day: 'WEDNESDAY', value: '8:00 - 17:00' },
-            { day: 'THURSDAY', value: '8:00 - 17:00' },
-            { day: 'FRIDAY', value: '8:00 - 17:00' },
+            { day: 'MONDAY', value: '08:00 - 17:00' },
+            { day: 'TUESDAY', value: '08:00 - 17:00' },
+            { day: 'WEDNESDAY', value: '08:00 - 17:00' },
+            { day: 'THURSDAY', value: '08:00 - 17:00' },
+            { day: 'FRIDAY', value: '08:00 - 17:00' },
             { day: 'SATURDAY', value: '' },
             { day: 'SUNDAY', value: '' },
           ]}

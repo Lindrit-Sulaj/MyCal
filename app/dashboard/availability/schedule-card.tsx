@@ -43,7 +43,7 @@ export default function ScheduleCard({ workDays, s, i, timezone }: {
           <Globe className='size-4' /> {timezone}
         </p>
       </div>
-      <div onClick={(e) => e.stopPropagation()}>
+      {/* <div onClick={(e) => e.stopPropagation()}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
             <Button size="icon" variant="outline">
@@ -68,7 +68,7 @@ export default function ScheduleCard({ workDays, s, i, timezone }: {
 
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </div> */}
     </Link>
   )
 }

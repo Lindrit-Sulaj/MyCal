@@ -42,11 +42,11 @@ export async function createSchedule({ name, availableDays, isDefault }: { name?
         isDefault,
         name: name || 'Working Hours', 
         availableDays: [
-        { day: 'MONDAY', value: '8:00 - 17:00' },
-        { day: 'TUESDAY', value: '8:00 - 17:00' },
-        { day: 'WEDNESDAY', value: '8:00 - 17:00' },
-        { day: 'THURSDAY', value: '8:00 - 17:00' },
-        { day: 'FRIDAY', value: '8:00 - 17:00' },
+        { day: 'MONDAY', value: '08:00 - 17:00' },
+        { day: 'TUESDAY', value: '08:00 - 17:00' },
+        { day: 'WEDNESDAY', value: '08:00 - 17:00' },
+        { day: 'THURSDAY', value: '08:00 - 17:00' },
+        { day: 'FRIDAY', value: '08:00 - 17:00' },
         { day: 'SATURDAY', value: '' },
         { day: 'SUNDAY', value: '' },
       ]}
@@ -83,4 +83,42 @@ export async function deleteSchedule(id: string) {
   }
 
   return true
+}
+
+export async function setAsDefault(scheduleId: string) {
+  const user = await getUser();
+
+  if (!user) throw new Error("Not authorized");
+
+  const defaultSchedule = user?.schedules.find(s => s.isDefault);
+  if (!user.schedules.find(s => s.id === scheduleId)) throw new Error("This schedule doesn't exist")
+
+  if (!defaultSchedule) {
+    return await prisma.schedule.update({
+      where: { id: scheduleId },
+      data: {
+        isDefault: true
+      }
+    })
+  }
+
+  if (defaultSchedule.id === scheduleId) throw new Error("This schedule is already default");
+
+  await prisma.schedule.update({
+    where: {
+      id: defaultSchedule.id
+    },
+    data: {
+      isDefault: false
+    }
+  });
+
+  return await prisma.schedule.update({
+    where: {
+      id: scheduleId
+    },
+    data: {
+      isDefault: true
+    }
+  });
 }

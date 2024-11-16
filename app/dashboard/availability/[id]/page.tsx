@@ -1,11 +1,15 @@
 import React from 'react'
+import Link from 'next/link'
+import { ArrowLeft, Edit2 } from 'lucide-react'
 
 import { getSchedule } from '@/app/actions/schedule'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
-import { generateWorkDays } from '@/lib/generateWorkDays'
+
+import MakeDefault from './make-default'
+import EditSchedule from './edit-schedule'
 import DeleteSchedule from './delete-schedule'
+
+import { Button } from '@/components/ui/button'
+import { generateWorkDays } from '@/lib/generateWorkDays'
 import { Separator } from '@/components/ui/separator'
 
 export default async function SchedulePage({ params }: { params: Promise<{ id: string }> }) {
@@ -43,14 +47,14 @@ export default async function SchedulePage({ params }: { params: Promise<{ id: s
           </div>
         </div>
         <div className="flex gap-x-4 items-center">
-          <DeleteSchedule id={schedule.id} />
+          <MakeDefault scheduleId={schedule.id} isDefault={schedule.isDefault} />
           <Separator orientation='vertical' className='h-1/2' />
+          <DeleteSchedule id={schedule.id} />
         </div>
       </div>
-      <pre>
-        {JSON.stringify(schedule, null, 2)}
-      </pre>
-
+      <div className="p-6 lg:p-8 grid grid-cols-4">
+        <EditSchedule className='border col-span-3' availableDays={schedule.availableDays} id={schedule.id} />
+      </div>
     </div>
   )
 }
