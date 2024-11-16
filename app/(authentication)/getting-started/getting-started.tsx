@@ -75,13 +75,13 @@ export default function GettingStarted() {
           <form onSubmit={(e) => handleGettingStarted(e)}>
             <div className="mb-2">
               <Label htmlFor='name'>Name</Label>
-              <Input value={name} onChange={(e) => setName(e.target.value)} id='name' name='name' className='mt-1' type='text' />
+              <Input value={name} onChange={(e) => setName(e.target.value)} id='name' name='name' className='mt-1' type='text' required />
             </div>
             <div className="my-2">
               <Label htmlFor='username'>Username</Label>
               <div className="flex mt-1 rounded-md bg-neutral-100 dark:bg-neutral-950 overflow-hidden items-center border">
                 <div className='px-3 text-sm text-neutral-700 dark:text-neutral-300'>mycal.com/</div>
-                <Input value={username} onChange={(e) => setUsername(e.target.value)} name='username' id='username' className='bg-white dark:bg-neutral-900 rounded-l-none focus-visible:ring-0 border-0 border-l' placeholder='Your username' />
+                <Input value={username} onChange={(e) => setUsername(e.target.value)} name='username' id='username' className='bg-white dark:bg-neutral-900 rounded-l-none focus-visible:ring-0 border-0 border-l' placeholder='Your username' required />
               </div>
             </div>
             <div className="my-2">

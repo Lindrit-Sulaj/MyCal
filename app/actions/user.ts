@@ -69,7 +69,7 @@ export async function createUser(data: UserCreate) {
       name,
       schedules: {
         create: [
-          { name: 'Working Hours', availableDays: [
+          { name: 'Working Hours', isDefault: true, availableDays: [
             { day: 'MONDAY', value: '8:00 - 17:00' },
             { day: 'TUESDAY', value: '8:00 - 17:00' },
             { day: 'WEDNESDAY', value: '8:00 - 17:00' },
@@ -119,7 +119,7 @@ export async function editUser({ data, usernameRequired }: { data: Partial<Pick<
   })
 
   if (user.schedules.length === 0) {
-    await createSchedule({ availableDays: 'default' });
+    await createSchedule({ availableDays: 'default', isDefault: true });
   }
 
   return true;

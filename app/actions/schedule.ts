@@ -18,7 +18,19 @@ export async function getSchedules() {
   })
 }
 
-export async function createSchedule({ name, availableDays }: { name?: string, availableDays: AvailableDays }) {
+export async function getSchedule(id: string) {
+  const user = await getUser();
+  if (!user) throw new Error("Not authorized");
+
+  return await prisma.schedule.findUnique({
+    where: {
+      id,
+      userId: user.id
+    }
+  })
+}
+
+export async function createSchedule({ name, availableDays, isDefault }: { name?: string, isDefault?: boolean, availableDays: AvailableDays }) {
   const user = await getUser();
 
   if (!user) throw new Error("Not authorized")
@@ -27,7 +39,8 @@ export async function createSchedule({ name, availableDays }: { name?: string, a
     return await prisma.schedule.create({
       data: { 
         userId: user.id,
-        name: 'Working Hours', 
+        isDefault,
+        name: name || 'Working Hours', 
         availableDays: [
         { day: 'MONDAY', value: '8:00 - 17:00' },
         { day: 'TUESDAY', value: '8:00 - 17:00' },
@@ -47,4 +60,27 @@ export async function createSchedule({ name, availableDays }: { name?: string, a
       }
     })
   }
+}
+
+export async function deleteSchedule(id: string) {
+  const user = await getUser();
+
+  if (!user) throw new Error("Not authorized")
+
+  if (user.schedules.length <= 1) throw new Error("You cannot delete your only schedule")
+  
+  const deletedSchedule = await prisma.schedule.delete({
+    where: { id }
+  });
+
+  if (deletedSchedule.isDefault) {
+    const newDefaultScheduleId = user.schedules.find(s => s.id !== deletedSchedule.id)?.id;
+
+    await prisma.schedule.update({
+      where: { id: newDefaultScheduleId },
+      data: { isDefault: true }
+    });
+  }
+
+  return true
 }

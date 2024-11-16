@@ -116,18 +116,18 @@ export default function SignUp() {
                   <form onSubmit={(e) => handleCreateAccount(e)}>
                     <div className="mb-2">
                       <Label>Full name</Label>
-                      <Input value={name} onChange={(e) => setName(e.target.value)} name='name' id='name' placeholder='Your full name' className='mt-1' />
+                      <Input value={name} onChange={(e) => setName(e.target.value)} name='name' id='name' placeholder='Your full name' className='mt-1' required />
                     </div>
                     <div className="my-2">
                       <Label>Username</Label>
                       <div className="flex mt-1 rounded-md bg-neutral-100 dark:bg-neutral-950 overflow-hidden items-center border">
                         <div className='px-3 text-sm text-neutral-700 dark:text-neutral-300'>mycal.com/</div>
-                        <Input value={username} onChange={(e) => setUsername(e.target.value)} name='username' id='username' className='bg-white dark:bg-neutral-900 rounded-l-none focus-visible:ring-0 border-0 border-l' placeholder='Your username' />
+                        <Input value={username} onChange={(e) => setUsername(e.target.value)} name='username' id='username' className='bg-white dark:bg-neutral-900 rounded-l-none focus-visible:ring-0 border-0 border-l' placeholder='Your username' required />
                       </div>
                     </div>
                     <div className="my-2">
                       <Label>Email</Label>
-                      <Input value={email} onChange={(e) => setEmail(e.target.value)} name='email' id='email' placeholder='Your email address' className='mt-1' type="email" />
+                      <Input value={email} onChange={(e) => setEmail(e.target.value)} name='email' id='email' placeholder='Your email address' className='mt-1' type="email" required />
                     </div>
                     <div className="my-2">
                       <Label>Timezone</Label>
@@ -135,7 +135,7 @@ export default function SignUp() {
                     </div>
                     <div className="my-2">
                       <Label>Password</Label>
-                      <Input value={password} onChange={(e) => setPassword(e.target.value)} name='password' id='password' placeholder='Your password' type="password" className='mt-1' />
+                      <Input value={password} onChange={(e) => setPassword(e.target.value)} name='password' id='password' placeholder='Your password' type="password" className='mt-1' required />
                     </div>
                     <Button disabled={loading} variant="secondary" className='w-full mt-2'>
                       {!loading ? "Create account" :

@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser();
-  
+
   const conditions = [
     !user?.timezone,
     !user?.username,
@@ -24,9 +24,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <AppSidebar />
       <main className='w-full'>
         <DashboardNavbar />
-        <div className="p-6 lg:p-8">
-          {children}
-        </div>
+        {children}
       </main>
     </SidebarProvider>
   )

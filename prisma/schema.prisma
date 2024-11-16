@@ -37,6 +37,7 @@ model Schedule {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @db.ObjectId
   name String
+  isDefault Boolean?
 
   availableDays AvailableDays[]
 
