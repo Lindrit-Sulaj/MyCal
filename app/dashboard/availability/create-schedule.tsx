@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
+  DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -49,6 +50,7 @@ export default function CreateSchedule() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a new schedule</DialogTitle>
+          <DialogDescription className='sr-only'>Create a new schedule</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleCreateSchedule}>
           <Label htmlFor="name">Name</Label>

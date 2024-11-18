@@ -12,6 +12,13 @@ import { Button } from '@/components/ui/button'
 import { generateWorkDays } from '@/lib/generateWorkDays'
 import { Separator } from '@/components/ui/separator'
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 export default async function SchedulePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const schedule = await getSchedule(id)
@@ -29,11 +36,21 @@ export default async function SchedulePage({ params }: { params: Promise<{ id: s
     <div>
       <div className="border-b py-4 flex justify-between px-6 md:px-8">
         <div className='flex items-center gap-x-4'>
-          <Link href="/dashboard/availability">
-            <Button size="icon" variant="secondary">
-              <ArrowLeft />
-            </Button>
-          </Link>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link href="/dashboard/availability">
+                  <Button size="icon" variant="secondary">
+                    <ArrowLeft />
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Go to all schedules</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
 
           <div>
             <h1 className='font-medium lg:text-lg'>{schedule?.name}</h1>
@@ -52,9 +69,7 @@ export default async function SchedulePage({ params }: { params: Promise<{ id: s
           <DeleteSchedule id={schedule.id} />
         </div>
       </div>
-      <div className="p-6 lg:p-8 grid grid-cols-4">
-        <EditSchedule className='border col-span-3' availableDays={schedule.availableDays} id={schedule.id} />
-      </div>
+      <EditSchedule availableDays={schedule.availableDays} id={schedule.id} scheduleName={schedule.name} />
     </div>
   )
 }

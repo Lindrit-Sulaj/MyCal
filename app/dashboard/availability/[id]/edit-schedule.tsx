@@ -1,7 +1,12 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { AvailableDays, DayOfWeek } from '@prisma/client'
+import { Check } from 'lucide-react'
+import { editSchedule } from '@/app/actions/schedule'
+
 import { getTimes } from '@/lib/times'
+import { useToast } from '@/hooks/use-toast'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import {
@@ -11,15 +16,63 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
-export default function EditSchedule({ id, availableDays, className }: { id: string, className?: string, availableDays: AvailableDays[] }) {
+export default function EditSchedule({ id, availableDays, scheduleName }: { id: string, availableDays: AvailableDays[], scheduleName: string }) {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const [times, setTimes] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [editNameLoading, setEditNameLoading] = useState(false);
+  const [name, setName] = useState<string>(scheduleName || "");
 
   useEffect(() => {
-    console.log('Running heavy function')
     const res = getTimes();
     setTimes(res)
   }, [])
+
+  async function handleEditName() {
+    setEditNameLoading(true);
+
+    const editedSchedule = await editSchedule(id, { name })
+      .catch((e) => {
+        toast({
+          title: e.message,
+          variant: 'destructive'
+        })
+      });
+
+    if (editedSchedule) {
+      toast({
+        title: 'Schedule has been successfully modified'
+      })
+      router.refresh();
+      setEditNameLoading(false);
+    }
+  }
+
+  async function handleSaveChanges() {
+    setLoading(true);
+
+    const editedSchedule = await editSchedule(id, { availableDays: [monday, tuesday, wednesday, thursday, friday, saturday, sunday] })
+      .catch((e) => {
+        toast({
+          title: e.message,
+          variant: 'destructive'
+        })
+      })
+
+    if (editedSchedule) {
+      toast({
+        title: `Schedule has been successfully modified`
+      })
+      router.refresh();
+      setLoading(false);
+    }
+  }
 
   const [monday, setMonday] = useState<AvailableDays>(availableDays[0]);
   const [tuesday, setTuesday] = useState<AvailableDays>(availableDays[1]);
@@ -30,14 +83,61 @@ export default function EditSchedule({ id, availableDays, className }: { id: str
   const [sunday, setSunday] = useState<AvailableDays>(availableDays[6]);
 
   return (
-    <div className={`${className} p-4 lg:p-8 rounded-lg space-y-2`}>
-      <Day times={times} day={monday} setDay={setMonday} />
-      <Day times={times} day={tuesday} setDay={setTuesday} />
-      <Day times={times} day={wednesday} setDay={setWednesday} />
-      <Day times={times} day={thursday} setDay={setThursday} />
-      <Day times={times} day={friday} setDay={setFriday} />
-      <Day times={times} day={saturday} setDay={setSaturday} />
-      <Day times={times} day={sunday} setDay={setSunday} />
+    <div className={`border-b`}>
+      <div className=' p-4 lg:p-8 border-b'>
+        <Label>Name</Label>
+        <div className="flex items-center gap-x-2 mt-1">
+          <Input placeholder='Working hours' className='w-auto' value={name} onChange={(e) => setName(e.target.value)} />
+          {name.length > 0 && name !== scheduleName && (
+            <Button onClick={handleEditName} size="icon" variant="secondary" disabled={editNameLoading}>
+              {!editNameLoading ? <Check /> : <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={cn("animate-spin")}
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>}
+            </Button>
+          )}
+        </div>
+      </div>
+      <div className='p-4 lg:p-8'>
+        <Day times={times} day={monday} setDay={setMonday} />
+        <Day times={times} day={tuesday} setDay={setTuesday} />
+        <Day times={times} day={wednesday} setDay={setWednesday} />
+        <Day times={times} day={thursday} setDay={setThursday} />
+        <Day times={times} day={friday} setDay={setFriday} />
+        <Day times={times} day={saturday} setDay={setSaturday} />
+        <Day times={times} day={sunday} setDay={setSunday} />
+        <Button className='mt-4' onClick={handleSaveChanges} disabled={loading}>
+          {!loading ? "Save changes" :
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={cn("animate-spin")}
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+              Saving changes...
+            </>}
+        </Button>
+      </div>
+
     </div>
   )
 }

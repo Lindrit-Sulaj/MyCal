@@ -14,7 +14,7 @@ function Navbar() {
 
   const auth = useAuth();
 
-  console.log(darkMode)
+  console.log(auth)
 
   return (
     <nav className='px-8 md:px-12 lg:px-14 absolute top-8 z-50 w-full'>

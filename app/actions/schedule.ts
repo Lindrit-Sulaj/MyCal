@@ -1,6 +1,6 @@
 'use server'
 
-import { DayOfWeek } from "@prisma/client"
+import { DayOfWeek, AvailableDays as PrismaAvailableDays } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { getUser } from "./user"
 
@@ -70,7 +70,7 @@ export async function deleteSchedule(id: string) {
   if (user.schedules.length <= 1) throw new Error("You cannot delete your only schedule")
   
   const deletedSchedule = await prisma.schedule.delete({
-    where: { id }
+    where: { id, userId: user.id }
   });
 
   if (deletedSchedule.isDefault) {
@@ -95,7 +95,7 @@ export async function setAsDefault(scheduleId: string) {
 
   if (!defaultSchedule) {
     return await prisma.schedule.update({
-      where: { id: scheduleId },
+      where: { id: scheduleId, userId: user.id },
       data: {
         isDefault: true
       }
@@ -106,7 +106,8 @@ export async function setAsDefault(scheduleId: string) {
 
   await prisma.schedule.update({
     where: {
-      id: defaultSchedule.id
+      id: defaultSchedule.id,
+      userId: user.id
     },
     data: {
       isDefault: false
@@ -115,10 +116,29 @@ export async function setAsDefault(scheduleId: string) {
 
   return await prisma.schedule.update({
     where: {
-      id: scheduleId
+      id: scheduleId,
+      userId: user.id
     },
     data: {
       isDefault: true
     }
   });
+}
+
+export async function editSchedule( id: string, data: { availableDays?: PrismaAvailableDays[], name?: string }) {
+  const user = await getUser();
+
+  if (!user) throw new Error("Not authorized");
+
+  const updatedSchedule = await prisma.schedule.update({
+    where: {
+      id,
+      userId: user.id
+    },
+    data
+  });
+
+  if (!updatedSchedule) throw new Error("Schedule doesn't exist");
+
+  return updatedSchedule;
 }
