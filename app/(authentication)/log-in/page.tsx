@@ -1,10 +1,10 @@
 'use client'
 
-import { FormEvent, useState } from "react"
-import { useRouter } from "next/navigation"
+import { FormEvent, useEffect, useState } from "react"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
 
+import { useAuth } from "@/app/auth-provider"
 import OAuth from "@/components/oauth"
 import { navigate } from "@/app/actions/navigate"
 import { useToast } from "@/hooks/use-toast"
@@ -15,12 +15,19 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
 export default function LogIn() {
+  const auth = useAuth();
+  
   const { toast } = useToast();
-  const router = useRouter();
   
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (auth?.status === "authenticated") {
+      navigate('/dashboard')
+    }
+  }, [auth?.status])
 
   async function handleSignIn(e: FormEvent) {
     e.preventDefault();
@@ -34,7 +41,6 @@ export default function LogIn() {
         title: 'Signed in successfully',
         description: 'Head over to the dashboard to start using your account'
       })
-      router.refresh()      
     } else if (signedInUser?.error) {
       toast({
         title: signedInUser.error,

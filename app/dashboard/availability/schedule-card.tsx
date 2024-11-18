@@ -29,7 +29,7 @@ export default function ScheduleCard({ workDays, s, i, timezone }: {
   timezone: string
 },) {
   return (
-    <Link href={`/dashboard/availability/${s.id}`} className={`p-6 hover:bg-neutral-950 transition-all flex justify-between items-center ${i !== 0 && "border-t"}`}>
+    <Link href={`/dashboard/availability/${s.id}`} className={`p-6 hover:bg-white dark:hover:bg-neutral-950 transition-all flex justify-between items-center ${i !== 0 && "border-t"}`}>
       <div>
         <h3 className='font-medium inline-flex items-center gap-x-2'>{s.name} {s.isDefault && <Badge>Default</Badge>}</h3>
         <p className='text-sm mt-1 text-foreground/80'>

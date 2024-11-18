@@ -11,6 +11,7 @@ import { createUser, createVerification, verifyEmail } from '@/app/actions/user'
 import timezoneMapping from '@/lib/timezones'
 import { cn } from '@/lib/utils'
 
+import { useAuth } from '@/app/auth-provider'
 import GridPattern from '@/components/ui/grid-pattern'
 import { useToast } from '@/hooks/use-toast'
 import {
@@ -23,9 +24,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import OAuth from '@/components/oauth'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 export default function SignUp() {
+  const auth = useAuth();
   const { toast } = useToast();
 
   const [user, setUser] = useState<User | undefined>();
@@ -39,6 +40,12 @@ export default function SignUp() {
   const [verificationId, setVerificationId] = useState<string>('')
 
   const [verificationCode, setVerificationCode] = useState<string>('')
+
+  useEffect(() => {
+    if (auth?.status === "authenticated") {
+      navigate('/dashboard')
+    }
+  }, [auth?.status])
 
   useEffect(() => {
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
