@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
 
@@ -15,6 +16,8 @@ import { Input } from "@/components/ui/input"
 
 export default function LogIn() {
   const { toast } = useToast();
+  const router = useRouter();
+  
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('');
@@ -31,7 +34,7 @@ export default function LogIn() {
         title: 'Signed in successfully',
         description: 'Head over to the dashboard to start using your account'
       })
-      navigate('/dashboard')
+      router.refresh()      
     } else if (signedInUser?.error) {
       toast({
         title: signedInUser.error,
