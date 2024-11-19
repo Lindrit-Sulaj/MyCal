@@ -46,9 +46,14 @@ export default function DeleteSchedule({ id }: { id: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="icon" variant="secondary">
-          <Trash />
-        </Button>
+        <div>
+          <Button size="icon" variant="secondary" className='hidden sm:inline-flex'>
+            <Trash />
+          </Button>
+          <Button variant="destructive" className="w-full sm:hidden">
+            <Trash /> Delete schedule
+          </Button>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -81,7 +86,7 @@ export default function DeleteSchedule({ id }: { id: string }) {
                 </svg>
                 Deleting schedule...
               </>}
-            </Button>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

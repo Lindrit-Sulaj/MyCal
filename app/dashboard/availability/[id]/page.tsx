@@ -18,6 +18,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 export default async function SchedulePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -34,7 +42,7 @@ export default async function SchedulePage({ params }: { params: Promise<{ id: s
 
   return (
     <div>
-      <div className="border-b py-4 flex justify-between px-6 md:px-8">
+      <div className="border-b py-4 flex flex-row items-center justify-between px-6 md:px-8">
         <div className='flex items-center gap-x-4'>
           <TooltipProvider>
             <Tooltip>
@@ -63,11 +71,32 @@ export default async function SchedulePage({ params }: { params: Promise<{ id: s
             </p>
           </div>
         </div>
-        <div className="flex gap-x-4 items-center">
+        <div className="hidden sm:flex gap-x-4 items-center">
           <MakeDefault scheduleId={schedule.id} isDefault={schedule.isDefault} />
           <Separator orientation='vertical' className='h-1/2' />
           <DeleteSchedule id={schedule.id} />
         </div>
+        <Sheet >
+          <SheetTrigger className='sm:hidden' asChild>
+            <Button size="icon" variant="ghost">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="!size-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>{schedule.name}</SheetTitle>
+              <SheetDescription className='sr-only'>{schedule.name}</SheetDescription>
+            </SheetHeader>
+            <div className="h-full flex flex-col py-4">
+              <MakeDefault scheduleId={schedule.id} isDefault={schedule.isDefault} />
+              <div className="mt-auto">
+                <DeleteSchedule id={schedule.id} />
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
       <EditSchedule availableDays={schedule.availableDays} id={schedule.id} scheduleName={schedule.name} />
     </div>

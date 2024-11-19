@@ -108,7 +108,7 @@ export default function EditSchedule({ id, availableDays, scheduleName }: { id: 
           )}
         </div>
       </div>
-      <div className='p-4 lg:p-8'>
+      <div className='p-4 lg:p-8 space-y-6 sm:space-y-0'>
         <Day times={times} day={monday} setDay={setMonday} />
         <Day times={times} day={tuesday} setDay={setTuesday} />
         <Day times={times} day={wednesday} setDay={setWednesday} />
@@ -174,7 +174,7 @@ function Day({ day, setDay, times }: {
   }
 
   return (
-    <div className='flex gap-x-4 h-10'>
+    <div className='flex flex-col sm:flex-row gap-x-4 sm:h-10 space-y-2'>
       <div className='flex items-center space-x-2 w-40'>
         <Switch checked={value ? true : false} onCheckedChange={handleCheckedChange} />
         <Label>{dayOfWeek[0] + dayOfWeek.slice(1).toLowerCase()}</Label>

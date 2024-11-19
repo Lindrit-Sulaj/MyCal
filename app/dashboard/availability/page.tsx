@@ -12,8 +12,8 @@ export default async function Schedules() {
   const user = await getUser();
 
   return (
-    <div className='p-6 lg:p-8'>
-      <div className='flex justify-between items-center'>
+    <div className='px-4 py-6 sm:p-6 lg:p-8'>
+      <div className='flex flex-col items-start sm:flex-row sm:justify-between sm:items-center space-y-2'>
         <div>
           <h1 className='text-xl md:text-2xl font-medium'>Schedules</h1>
           <p className='text-sm mt-1 text-foreground/80'>Configure times when you are available for bookings.</p>
