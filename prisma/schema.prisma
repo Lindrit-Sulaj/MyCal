@@ -64,9 +64,10 @@ model EventType {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   userId   String @db.ObjectId
   scheduleId String @db.ObjectId
-  eventName     String
+  title String
+  eventName     String?
   duration Int
-  url String @unique
+  url String
   description  String?
   color        String?
   hidden Boolean?
@@ -74,7 +75,7 @@ model EventType {
   dateRange    DateRange?
   location     Location?
   afterBooking AfterBooking
-  questions    Questions[]
+  questions    Question[]
   requiresConfirmation Boolean?
 
   createdAt DateTime @default(now())
@@ -85,8 +86,9 @@ model EventType {
   user     User      @relation(fields: [userId], references: [id])
 }
 
-type Questions {
-  question   String
+type Question {
+  label   String
+  identifier String
   placeholder String?
   required   Boolean
   answerType AnswerType
@@ -151,7 +153,7 @@ model Booking {
 }
 
 type BookingData {
-  label String
+  identifier String
   value String
 }
 

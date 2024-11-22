@@ -1,13 +1,18 @@
-import { Plus } from 'lucide-react'
 import React from 'react'
+import { notFound } from 'next/navigation';
 
 import { getUser } from '@/app/actions/user'
-import { Button } from '@/components/ui/button'
 import { getAllEventTypesByUserId } from '@/app/actions/event-type';
+
+import CreateEvent from './create-event';
 
 export default async function EventTypes() {
   const user = await getUser();
   const eventTypes = await getAllEventTypesByUserId(user?.id!);
+
+  if (!user) {
+    notFound();
+  }
 
   return (
     <div className='px-4 py-6 sm:p-6 lg:p-8'>
@@ -16,7 +21,7 @@ export default async function EventTypes() {
           <h1 className='text-xl md:text-2xl font-medium'>Event types</h1>
           <p className='text-sm mt-1 text-foreground/80'>Create events for people to book on your calendar.</p>
         </div>
-        <Button>Create new</Button>
+        <CreateEvent username={user.username as string} />
       </div>
 
       <div className="grid grid-cols-4 mt-4 md:mt-6">
