@@ -2,15 +2,38 @@
 
 import { prisma } from "@/lib/prisma";
 import { getSession, getUser } from "./user";
-import { revalidateTag } from "next/cache";
+import { EventType } from "@prisma/client";
 
-export async function getAllEventTypesByUserId(userId: string) {
-  const session = await getSession();
+export async function getAllEventTypes(select?: string[]) {
+  const user = await getUser();
 
-  if (!session?.user?.email) throw new Error("401 Unauthorized");
+  if (!user) throw new Error("401 Unauthorized");
 
-  return await prisma.schedule.findMany({
-    where: { userId }
+  if (!select) {
+    return await prisma.eventType.findMany({
+      where: { userId: user.id }
+    })
+  } else {
+    return await prisma.eventType.findMany({
+      where: { userId: user.id }, select: Object.fromEntries(select.map(p => [p, true]))
+    })
+  }
+  
+}
+
+export async function getEventTypeById(id: string) {
+  const user = await getUser();
+
+  if (!user) throw new Error("401 Unauthorized");
+
+  return await prisma.eventType.findUnique({
+    where: {
+      id,
+      userId: user.id
+    },
+    include: {
+      schedule: true
+    }
   })
 }
 
@@ -24,7 +47,7 @@ type CreateEventType = {
 export async function createEventType(data: CreateEventType) {
   const user = await getUser();
 
-  if (!user) throw new Error("Not authorized");
+  if (!user) throw new Error("401 Unauthorized");
 
   const userDefaultScheduleId = user.schedules.find((schedule) => schedule.isDefault === true)?.id!
 
@@ -38,7 +61,7 @@ export async function createEventType(data: CreateEventType) {
   if (eventTypeWithURL) {
     return {
       status: 'Error',
-      data: 'Event Type with this URL already exists'
+      message: 'Event Type with this URL already exists'
     }
   }
 
@@ -73,10 +96,37 @@ export async function createEventType(data: CreateEventType) {
     }
   });
 
-  revalidateTag('eventTypes')
+  return {
+    status: 'OK',
+    data: newEventType as EventType
+  }
+}
+
+export async function editEventType(id: string, newData: Partial<EventType>) {
+  const user = await getUser();
+
+  if (!user) throw new Error("401 Unauthorized");
+  
+  if (newData.url) {
+    const isURLTaken = await prisma.eventType.findFirst({
+      where: {
+        url: newData.url
+      }
+    });
+
+    if (isURLTaken) return { status: 'Error', message: 'Event Type with this URL already exists' }
+  }
+
+  const editedEventType = await prisma.eventType.update({
+    where: {
+      id,
+      userId: user.id
+    },
+    data: newData
+  })
 
   return {
     status: 'OK',
-    data: newEventType
+    data: editedEventType as EventType
   }
 }

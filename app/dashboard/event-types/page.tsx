@@ -1,18 +1,19 @@
 import React from 'react'
 import { notFound } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
 
 import { getUser } from '@/app/actions/user'
-import { getAllEventTypesByUserId } from '@/app/actions/event-type';
 
 import CreateEvent from './create-event';
-
+import EventTypeCard from './event-type-card';
 export default async function EventTypes() {
   const user = await getUser();
-  const eventTypes = await getAllEventTypesByUserId(user?.id!);
 
   if (!user) {
     notFound();
   }
+
+  const eventTypes = await prisma.eventType.findMany({ where: { userId: user.id }, select: { id: true, title: true, url: true, duration: true, hidden: true } });
 
   return (
     <div className='px-4 py-6 sm:p-6 lg:p-8'>
@@ -24,8 +25,13 @@ export default async function EventTypes() {
         <CreateEvent username={user.username as string} />
       </div>
 
-      <div className="grid grid-cols-4 mt-4 md:mt-6">
-        <div className="text-card-foreground bg-neutral-100 dark:bg-neutral-900 border rounded-md p-6"></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 mt-4 md:mt-6 gap-6">
+        {eventTypes.map((e) => (
+          <EventTypeCard key={e.id} username={user.username!} {...e} />
+        ))}
+      </div>
+      <div>
+        <pre>{JSON.stringify(eventTypes, null, 2)}</pre>
       </div>
     </div>
   )

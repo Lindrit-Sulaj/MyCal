@@ -70,8 +70,9 @@ model EventType {
   url String
   description  String?
   color        String?
-  hidden Boolean?
+  hidden Boolean? @default(false)
 
+  allowGuests Boolean?
   dateRange    DateRange?
   location     Location?
   afterBooking AfterBooking
@@ -90,8 +91,9 @@ type Question {
   label   String
   identifier String
   placeholder String?
-  required   Boolean
+  required   Boolean @default(false)
   answerType AnswerType
+  isDeletable Boolean? @default(true)
   options    String?
 }
 
@@ -134,6 +136,7 @@ enum AnswerType {
   RADIO_BUTTONS
   CHECKBOXES
   DROPDOWN
+  NUMBER
 }
 
 model Booking {
