@@ -1,9 +1,6 @@
 import React from 'react'
+import { redirect } from 'next/navigation'
 
 export default function DashboardMain() {
-  return (
-    <div>
-      Dashboard
-    </div>
-  )
+  redirect('/dashboard/event-types')
 }

@@ -85,12 +85,14 @@ export async function createEventType(data: CreateEventType) {
           label: 'Your name',
           required: true,
           answerType: 'ONE_LINE',
+          isDeletable: false
         },
         {
           identifier: 'email',
           label: 'Your email',
           required: true,
-          answerType: 'EMAIL'
+          answerType: 'EMAIL',
+          isDeletable: false,
         }
       ]
     }

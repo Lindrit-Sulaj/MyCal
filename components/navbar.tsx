@@ -14,8 +14,6 @@ function Navbar() {
 
   const auth = useAuth();
 
-  console.log(auth)
-
   return (
     <nav className='px-8 md:px-12 lg:px-14 absolute top-8 z-50 w-full'>
       <div className="w-full max-w-screen-xl mx-auto flex justify-between items-center bg-neutral-100 shadow-sm border dark:bg-neutral-900 pl-6 py-3 pr-3 rounded-lg">
