@@ -136,9 +136,14 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
 
         res = await editEventType(eventType.id, editedData);
       } else if (tab === "availability") {
-        res = await editEventType(eventType.id, { scheduleId: schedule });
+        if (dateRange.type === "CALENDAR_DAYS" && !dateRange.value) {
+          throw new Error("Missing value for calendar days")
+        }
+        res = await editEventType(eventType.id, { scheduleId: schedule, dateRange: { type: dateRange.type, value: dateRange.type === "CALENDAR_DAYS" ? dateRange.value : null } });
       } else if (tab === "hosts-and-invitees") {
         res = await editEventType(eventType.id, { allowGuests })
+      } else if (tab === "advanced") {
+        res = await editEventType(eventType.id, { questions, eventName, afterBooking, requiresConfirmation })
       }
 
       if (res?.status === "Error") {
@@ -294,7 +299,6 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="INDEFINITELY">Indefinitely</SelectItem>
-                      <SelectItem value="DATE_RANGE">Date Range</SelectItem>
                       <SelectItem value="CALENDAR_DAYS">Calendar Days</SelectItem>
                     </SelectContent>
                   </Select>

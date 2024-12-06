@@ -18,7 +18,7 @@ export async function getAllEventTypes(select?: string[]) {
       where: { userId: user.id }, select: Object.fromEntries(select.map(p => [p, true]))
     })
   }
-  
+
 }
 
 export async function getEventTypeById(id: string) {
@@ -108,7 +108,7 @@ export async function editEventType(id: string, newData: Partial<EventType>) {
   const user = await getUser();
 
   if (!user) throw new Error("401 Unauthorized");
-  
+
   if (newData.url) {
     const isURLTaken = await prisma.eventType.findFirst({
       where: {
@@ -124,7 +124,14 @@ export async function editEventType(id: string, newData: Partial<EventType>) {
       id,
       userId: user.id
     },
-    data: newData
+    data: {
+      ...newData,
+      ...(newData.questions && {
+        questions: newData.questions.map(q => {
+          return { ...q, options: q.options.filter(option => option !== "") }
+        })
+      })
+    }
   })
 
   return {

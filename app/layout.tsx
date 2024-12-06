@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import localFont from 'next/font/local'
-import { Inter } from 'next/font/google'
+import { Inter, Poppins } from 'next/font/google'
 
 import "./globals.css";
 
 import AuthProvider from "./auth-provider";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = localFont({ src: './fonts/GeistVF.woff', variable: '--font-geist-sans', display: 'swap' })
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
+const poppins = Poppins({ subsets: ['latin'], display: 'swap', variable: '--font-poppins', weight: ['300', '400', '500', '600' ,'700', '800']})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} font-[family-name:var(--font-geist-sans)]`}
+        className={`${inter.variable} ${poppins.variable} font-[family-name:var(--font-poppins)]`}
       >
         <AuthProvider>
           {children}

@@ -34,7 +34,7 @@ export default function Question({ q, isLast, questions, setQuestions }: {
   const [placeholder, setPlaceholder] = useState(q.placeholder || "")
   const [required, setRequired] = useState(q.required);
   const [hidden, setHidden] = useState(q.hidden);
-  const [options, setOptions] = useState<string[]>(["", "", ""])
+  const [options, setOptions] = useState<string[]>(q.options || ["", "", ""])
 
   function handleSave(e: FormEvent) {
     e.preventDefault();

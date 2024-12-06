@@ -116,9 +116,8 @@ enum AfterBookingEvent {
 }
 
 enum DateRangeType {
-  DATE_RANGE
-  CALENDAR_DAYS
   INDEFINITELY
+  CALENDAR_DAYS
 }
 
 enum LocationType {
