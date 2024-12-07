@@ -41,7 +41,7 @@ export async function createUser(data: UserCreate) {
     where: {
       OR: [
         {
-          username 
+          username
         },
         {
           email
@@ -69,15 +69,17 @@ export async function createUser(data: UserCreate) {
       name,
       schedules: {
         create: [
-          { name: 'Working Hours', isDefault: true, availableDays: [
-            { day: 'MONDAY', value: '08:00 - 17:00' },
-            { day: 'TUESDAY', value: '08:00 - 17:00' },
-            { day: 'WEDNESDAY', value: '08:00 - 17:00' },
-            { day: 'THURSDAY', value: '08:00 - 17:00' },
-            { day: 'FRIDAY', value: '08:00 - 17:00' },
-            { day: 'SATURDAY', value: '' },
-            { day: 'SUNDAY', value: '' },
-          ]}
+          {
+            name: 'Working Hours', isDefault: true, availableDays: [
+              { day: 'MONDAY', value: '08:00 - 17:00' },
+              { day: 'TUESDAY', value: '08:00 - 17:00' },
+              { day: 'WEDNESDAY', value: '08:00 - 17:00' },
+              { day: 'THURSDAY', value: '08:00 - 17:00' },
+              { day: 'FRIDAY', value: '08:00 - 17:00' },
+              { day: 'SATURDAY', value: '' },
+              { day: 'SUNDAY', value: '' },
+            ]
+          }
         ]
       }
     }
@@ -103,7 +105,11 @@ export async function editUser({ data, usernameRequired }: { data: Partial<Pick<
       }
     })
 
-    if (usernameTaken) throw new Error("Username is taken. Please choose another one!");
+    if (usernameTaken) {
+      const isUsernameTakenByCurrentUser = usernameTaken.email === session.user?.email
+
+      if (!isUsernameTakenByCurrentUser) throw new Error("Username is taken. Please choose another one!")
+    };
   }
 
   const user = await prisma.user.update({
