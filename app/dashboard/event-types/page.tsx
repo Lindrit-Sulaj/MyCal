@@ -30,9 +30,6 @@ export default async function EventTypes() {
           <EventTypeCard key={e.id} username={user.username!} {...e} />
         ))}
       </div>
-      <div>
-        <pre>{JSON.stringify(eventTypes, null, 2)}</pre>
-      </div>
     </div>
   )
 }

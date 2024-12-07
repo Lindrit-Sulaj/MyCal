@@ -3,7 +3,7 @@
 import Link from "next/link"
 
 import { useAuth } from "@/app/auth-provider"
-import { Calendar, ChartBarIcon, ChevronDown, Clock, Copy, ExternalLink, LinkIcon, LogOut, Palette, Settings, User } from "lucide-react"
+import { Calendar, ChartBarIcon, ChevronDown, Clock, Copy, ExternalLink, Key, LinkIcon, LogOut, Moon, Palette, Settings, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { signOut } from "next-auth/react"
 
 
 export function AppSidebar() {
@@ -46,25 +47,38 @@ export function AppSidebar() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/">
-                  <User /> Profile
+                <Link href="/settings/my-account/profile">
+                  <User /> My Profile
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/">
-                  <Palette /> Appearance
+                <Link href="/settings/my-account/general">
+                  <Settings /> My settings
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/">
-                  <Settings /> Settings
+                <Link href="/settings/my-account/appearence">
+                  <Moon /> Out of office
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <button className="w-full">
+                <Link href="/settings/security/password">
+                  <Key /> Password
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" asChild>
+                <Link href="/settings/security/password">
+                  <User /> Impersonation
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="cursor-pointer" asChild>
+                <button className="w-full" onClick={() => signOut()}>
                   <LogOut /> Log out
                 </button>
               </DropdownMenuItem>
@@ -112,7 +126,7 @@ export function AppSidebar() {
               <Settings /> Settings
             </Button>
           </Link>
-          <p className="text-xs text-center text-foreground/70">Lindrit Sulaj \ My Cal © { new Date().getFullYear() }</p>
+          <p className="text-xs text-center text-foreground/70">Lindrit Sulaj \ My Cal © {new Date().getFullYear()}</p>
         </SidebarGroup>
 
       </SidebarFooter>
