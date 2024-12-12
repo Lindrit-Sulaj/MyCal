@@ -207,3 +207,15 @@ export async function verifyEmail(userId: string, verificationId: string, token:
     }
   })
 }
+
+export async function deleteUser() {
+  const user = await getUser();
+
+  if (!user) throw new Error("401 Unauthorized")
+
+  return await prisma.user.delete({
+    where: {
+      id: user.id
+    }
+  })
+}
