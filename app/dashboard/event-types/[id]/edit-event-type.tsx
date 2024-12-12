@@ -3,12 +3,12 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, ExternalLink, Globe, Link as LinkIcon, Loader2, Pen, Plus, SlidersVertical, Users } from 'lucide-react'
+import { ArrowLeft, Calendar, ExternalLink, Globe, Link as LinkIcon, Loader2, Pen, Plus, SlidersVertical, Trash, Users } from 'lucide-react'
 import { EventType, Question as QuestionType, Schedule, AnswerType, AfterBookingEvent, DateRangeType } from '@prisma/client'
 
 import Question from './question'
 import { useAuth } from '@/app/auth-provider'
-import { editEventType } from '@/app/actions/event-type'
+import { deleteEventType, editEventType } from '@/app/actions/event-type'
 import { getSchedules } from '@/app/actions/schedule'
 import { getEventName } from '@/lib/getEventName'
 import {
@@ -29,6 +29,7 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -43,6 +44,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from '@/components/ui/checkbox'
 import CreateQuestion from './create-question'
 import { Switch } from '@/components/ui/switch'
+import { navigate } from '@/app/actions/navigate'
 
 export default function EditEventType(eventType: EventType & { schedule: Schedule, username: string, timezone: string }) {
   const searchParams = useSearchParams();
@@ -161,6 +163,22 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
     }
   }
 
+  async function handleDeleteEventType() {
+    setLoading(true);
+    
+    return await deleteEventType(eventType.id)
+      .then(() => {
+        setLoading(false);
+        navigate('/dashboard/event-types');
+      })
+      .catch(() => {
+        toast({
+          title: 'Something went wrong',
+          variant: 'destructive'
+        })
+      })
+  }
+
   return (
     <div>
       <div className="border-b py-4 flex flex-row items-center justify-between px-6 md:px-8">
@@ -186,7 +204,31 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
             <p className='text-sm text-foreground/80'>{eventType.url}</p>
           </div>
         </div>
-        <div>
+        <div className='flex items-center gap-x-4'>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Trash className='text-destructive dark:text-red-600' />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Do you want to delete {eventType.title}?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will delete this event type and all of it's bookings.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="ghost">Close</Button>
+                </DialogClose>
+                <Button variant="destructive" onClick={handleDeleteEventType} disabled={loading}>
+                  { loading && <Loader2 className='animate-spin' /> }
+                  { loading ? 'Deleting...' : 'Delete' }
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <Button disabled={loading} onClick={handleSaveChanges}>
             {loading && <Loader2 className='animate-spin' />}
             {loading ? "Saving changes" : "Save"}
@@ -194,7 +236,7 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
         </div>
       </div>
       <div className='p-6 md:p-8'>
-        <div className='flex gap-x-2'>
+        <div className='flex gap-x-2 overflow-auto'>
           <TabButton tab={tab} setTab={setTab} label="Event details" icon={<LinkIcon className='size-4' />} value="event-details" />
           <TabButton tab={tab} setTab={setTab} label="Availability" icon={<Calendar className='size-4' />} value="availability" />
           <TabButton tab={tab} setTab={setTab} label="Hosts and invitees" icon={<Users className='size-4' />} value="hosts-and-invitees" />
@@ -293,7 +335,7 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
                 <div>
                   <Label>Date Range</Label>
                   <p className='text-foreground/80 text-sm'>Invitees can schedule...</p>
-                  <Select value={dateRange.type} onValueChange={(v) => setDateRange({ value: '', type: v as DateRangeType})}>
+                  <Select value={dateRange.type} onValueChange={(v) => setDateRange({ value: '', type: v as DateRangeType })}>
                     <SelectTrigger className='mt-2'>
                       <SelectValue placeholder="Date Range" />
                     </SelectTrigger>
@@ -303,12 +345,12 @@ export default function EditEventType(eventType: EventType & { schedule: Schedul
                     </SelectContent>
                   </Select>
                 </div>
-                { dateRange.type === "CALENDAR_DAYS" && (
+                {dateRange.type === "CALENDAR_DAYS" && (
                   <div className='flex items-center gap-x-2 mt-2'>
                     <Input className='w-20' type="number" name="calendarDays" id="calendarDays" value={dateRange.value} onChange={(e) => setDateRange({ ...dateRange, value: e.target.value })} />
                     <div className='text-sm'>calendar days into the future</div>
                   </div>
-                ) }
+                )}
               </div>
             </>
           )}

@@ -139,3 +139,15 @@ export async function editEventType(id: string, newData: Partial<EventType>) {
     data: editedEventType as EventType
   }
 }
+
+export async function deleteEventType(id: string) {
+  const user = await getUser();
+
+  if (!user) throw new Error("401 Unauthorized");
+
+  return await prisma.eventType.delete({
+    where: {
+      id
+    }
+  })
+}

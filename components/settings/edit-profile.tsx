@@ -115,7 +115,7 @@ export default function EditProfile({ user }: { user: User }) {
         <Label htmlFor="description">Description</Label>
         <Textarea id="description" name="description" rows={3} placeholder="Write about yourself" className='mt-1' value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-4 lg:mt-6">
         <Button disabled={loading ? true : !changed}>
           {loading && <Loader2 className='animate-spin' />}
           {loading ? "Updating..." : "Update"}
