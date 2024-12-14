@@ -15,7 +15,6 @@ export default async function GeneralSettings() {
           <p className='text-sm text-foreground/80'>Manage settings for your timezone</p>
         </div>
         <Timezone userTimezone={user.timezone!} />
-
       </div>
     </div>
   )

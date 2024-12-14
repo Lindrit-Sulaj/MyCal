@@ -57,7 +57,7 @@ export function AppSidebar() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/settings/my-account/appearence">
+                <Link href="/settings/my-account/out-of-office">
                   <Moon /> Out of office
                 </Link>
               </DropdownMenuItem>
@@ -66,12 +66,7 @@ export function AppSidebar() {
             <DropdownMenuGroup>
               <DropdownMenuItem className="cursor-pointer" asChild>
                 <Link href="/settings/security/password">
-                  <Key /> Password
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/settings/security/password">
-                  <User /> Impersonation
+                  <Key /> Security
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

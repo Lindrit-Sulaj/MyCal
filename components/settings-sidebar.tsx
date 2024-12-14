@@ -43,7 +43,6 @@ export default function SettingsSidebar() {
               <div className="flex flex-col space-y-[1px] mt-2">
                 <SideLink label="Profile" url="/settings/my-account/profile" />
                 <SideLink label="General" url="/settings/my-account/general" />
-                <SideLink label="Appearance" url="/settings/my-account/appearance" />
                 <SideLink label="Out of office" url="/settings/my-account/out-of-office" />
               </div>
             </div>
@@ -51,7 +50,6 @@ export default function SettingsSidebar() {
               <p className="text-[13px] font-medium text-foreground/80 flex gap-x-2 items-center"><Key className="size-5" /> Security</p>
               <div className="flex flex-col space-y-[1px] mt-2">
                 <SideLink label="Password" url="/settings/security/password" />
-                <SideLink label="Impersonation" url="/settings/security/impersonation" />
               </div>
             </div>
           </SheetContent>
@@ -64,14 +62,12 @@ export default function SettingsSidebar() {
           <div className="flex flex-col space-y-[1px] mt-2">
             <SideLink label="Profile" url="/settings/my-account/profile" />
             <SideLink label="General" url="/settings/my-account/general" />
-            <SideLink label="Appearance" url="/settings/my-account/appearance" />
             <SideLink label="Out of office" url="/settings/my-account/out-of-office" />
           </div>
           <div className="mt-4">
             <p className="text-[13px] font-medium text-foreground/80 flex gap-x-2 items-center"><Key className="size-5" /> Security</p>
             <div className="flex flex-col space-y-[1px] mt-2">
               <SideLink label="Password" url="/settings/security/password" />
-              <SideLink label="Impersonation" url="/settings/security/impersonation" />
             </div>
           </div>
         </div>

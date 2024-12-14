@@ -22,6 +22,7 @@ model User {
 
   eventTypes         EventType[]
   schedules          Schedule[]
+  outOfOffice        OutOfOffice[]
   accounts           Account[]
   sessions           Session[]
   verificationTokens VerificationToken[]
@@ -88,7 +89,7 @@ type Question {
   label       String
   identifier  String
   placeholder String?
-  hidden      Boolean     @default(false)
+  hidden      Boolean    @default(false)
   required    Boolean    @default(false)
   answerType  AnswerType
   isDeletable Boolean?   @default(true)
@@ -150,6 +151,29 @@ model Booking {
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventType EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+}
+
+model OutOfOffice {
+  id     String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId String            @db.ObjectId
+  dates  LeaveDateRange
+  reason OutOfOfficeReason @default(UNSPECIFIED)
+  notes  String?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+type LeaveDateRange {
+  from DateTime
+  to   DateTime
+}
+
+enum OutOfOfficeReason {
+  UNSPECIFIED
+  VACATION
+  TRAVEL
+  SICK_LEAVE
+  PUBLIC_HOLIDAY
 }
 
 type BookingData {
