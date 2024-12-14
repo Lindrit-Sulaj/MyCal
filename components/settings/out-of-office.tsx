@@ -165,7 +165,12 @@ export default function OutOfOffice({ entries }: { entries: OutOfOfficeType[] })
           </Dialog>
         </div>
         <div>
-          {entries.map((entry, i) => (
+          { entries.length < 1 && (
+            <div className='p-4 lg:p-6'>
+              <p className='text-foreground/80'>You currently don't have any Out of Office entries.</p>
+            </div>
+          )}
+          {entries && entries.map((entry, i) => (
             <EditEntry key={i} entry={entry} isLast={entries.length - 1 === i} />
           ))}
         </div>

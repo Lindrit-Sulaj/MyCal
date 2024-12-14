@@ -52,9 +52,9 @@ export async function createUser(data: UserCreate) {
 
   if (emailUsernameValid) {
     if (emailUsernameValid.email === email) {
-      throw new Error("Email is already in use|This email is already in use. Please use a different email or log in if you already have an account.")
+      throw new Error("Email is already in use|Please use a different email or log in if you already have an account.")
     } else if (emailUsernameValid.username === username) {
-      throw new Error("Username is already in use|This username is already taken. Please choose a different one to continue.")
+      throw new Error("Username is already in use|Please choose a different username to continue.")
     }
   }
 
@@ -204,6 +204,25 @@ export async function verifyEmail(userId: string, verificationId: string, token:
     },
     data: {
       emailVerified: new Date()
+    }
+  })
+}
+
+export async function changePassword(oldPassword: string, newPassword: string) {
+  const user = await getUser()
+  if (!user) throw new Error('401 Unauthorized');
+
+  const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.hashedPassword!);
+  if (!isOldPasswordCorrect) throw new Error("Old password is incorrect");
+
+  const newHashedPassword = await bcrypt.hash(newPassword, 12);
+
+  return await prisma.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      hashedPassword: newHashedPassword
     }
   })
 }
