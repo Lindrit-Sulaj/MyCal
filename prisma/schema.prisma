@@ -25,6 +25,7 @@ model User {
   outOfOffice        OutOfOffice[]
   accounts           Account[]
   sessions           Session[]
+  resetPassword      ResetPassword[]
   verificationTokens VerificationToken[]
   // Optional for WebAuthn support
   Authenticator      Authenticator[]
@@ -223,6 +224,17 @@ model VerificationToken {
   user User @relation(fields: [identifier], references: [id], onDelete: Cascade)
 
   @@unique([identifier, token])
+}
+
+model ResetPassword {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String   @db.ObjectId
+  token      String
+  expires    DateTime
+
+  user User @relation(fields: [identifier], references: [id], onDelete: Cascade)
+
+  @@unique([token])
 }
 
 // Optional for WebAuthn support

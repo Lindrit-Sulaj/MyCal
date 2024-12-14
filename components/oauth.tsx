@@ -19,7 +19,7 @@ export default function OAuth({ className }: { className?: string }) {
         <p className='text-sm uppercase text-foreground/80 whitespace-nowrap'>Or continue with</p>
         <Separator className='w-10 grow' />
       </div>
-      <Button className='w-full' onClick={signInWithGoogle}>
+      <Button className='w-full' variant="secondary" onClick={signInWithGoogle}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="xMidYMid"

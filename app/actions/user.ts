@@ -3,6 +3,7 @@
 import bcrypt from 'bcryptjs'
 import { getServerSession } from 'next-auth'
 import { Resend } from 'resend'
+import { v4 as uuidv4 } from 'uuid'
 
 import { prisma } from '@/lib/prisma'
 import { options } from '../api/auth/[...nextauth]/options'
@@ -223,6 +224,79 @@ export async function changePassword(oldPassword: string, newPassword: string) {
     },
     data: {
       hashedPassword: newHashedPassword
+    }
+  })
+}
+
+export async function createResetPassword(userEmail: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: userEmail
+    }
+  });
+
+  if (!user) throw new Error("User with this email doesn't exist");
+
+  let timestamp = new Date().getTime();
+  timestamp += 600000;
+
+  const expirationDate = new Date(timestamp);
+  const uuid = uuidv4();
+
+  const resetPassword = await prisma.resetPassword.create({
+    data: {
+      identifier: user.id,
+      expires: expirationDate,
+      token: uuid
+    }
+  })
+
+  await resend.emails.send({
+    from: 'MyCal <contact@lindritsulaj.com>',
+    to: user?.email!,
+    subject: 'Reset Password for MyCal',
+    html: `
+      <p>Hi ${user.name},</p>
+      <p>We received a request to reset the password for your account on MyCal.</p>
+      <p>If you made this request, click the link below to reset your password:</p>
+      <p><a href="https://mycal.lindritsulaj.com/reset-password?token=${resetPassword.token}" target="_blank">Reset Your Password</a></p>
+      <p>If the link above doesn’t work, copy and paste this URL into your browser:</p>
+      <p>https://mycal.lindritsulaj.com/reset-password?token=${resetPassword.token}</p>
+      <p>For security reasons, this link will expire in 60 minutes. If you did not request a password reset, you can safely ignore this email.</p>
+      <p>If you have any questions or need further assistance, feel free to contact our support team.</p>
+      <p>Thank you,</p>
+      <p>Lindrit Sulaj</p>
+    `
+  });
+}
+
+export async function resetPassword(newPassword: string, token: string) {
+  const resetPasswordWithUser = await prisma.resetPassword.findUnique({
+    where: {
+      token
+    },
+    include: {
+      user: true
+    }
+  });
+
+  if (!resetPasswordWithUser) throw new Error("Something went wrong")
+
+  const currentTime = new Date().getTime();
+  const expirationTime = new Date(resetPasswordWithUser.expires).getTime();
+
+  if (expirationTime < currentTime) throw new Error("This code has expired. Please try again");
+
+  if (newPassword.length < 8) throw new Error("New password should be equal or bigger than 8 characters");
+
+  const hashedPassword = await bcrypt.hash(newPassword, 12)
+
+  await prisma.user.update({
+    where: {
+      id: resetPasswordWithUser.user.id
+    },
+    data: {
+      hashedPassword
     }
   })
 }
