@@ -24,6 +24,8 @@ export default async function ResetPasswordPage({ searchParams }: { searchParams
   const currentTime = new Date().getTime();
   const expirationTime = new Date(resetPassword.expires).getTime();
 
+  if (expirationTime < currentTime) return notFound();
+
   return (
     <main>
       <section className="p-4 lg:p-6 relative min-h-screen flex items-center justify-center flex-col gap-y-4">

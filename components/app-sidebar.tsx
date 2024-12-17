@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from "react"
 import Link from "next/link"
+import { signOut } from "next-auth/react"
 
 import { useAuth } from "@/app/auth-provider"
-import { Calendar, ChartBarIcon, ChevronDown, Clock, Copy, ExternalLink, Key, LinkIcon, LogOut, Moon, Palette, Settings, User } from "lucide-react"
+import { Calendar, ChartBarIcon, ChevronDown, Clock, Copy, CopyCheck, ExternalLink, Key, LinkIcon, LogOut, Moon, Palette, Settings, User as UserIcon } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -22,11 +24,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { signOut } from "next-auth/react"
 
-
-export function AppSidebar() {
+export function AppSidebar({ username }: { username: string }) {
   const auth = useAuth();
+
+  const [copied, setCopied] = useState(false);
+
+  function copyToClipboard() {
+    setCopied(true);
+
+    navigator.clipboard.writeText(`https://mycal.lindritsulaj.com/${username}`)
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1500)
+  }
 
   return (
     <Sidebar>
@@ -38,7 +50,6 @@ export function AppSidebar() {
                 <span className="text-left block">{auth?.data?.user?.name}</span>
                 <span className="text-xs text-sidebar-foreground/80 block text-left">{auth?.data?.user?.email}</span>
               </div>
-
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -48,7 +59,7 @@ export function AppSidebar() {
             <DropdownMenuGroup>
               <DropdownMenuItem className="cursor-pointer" asChild>
                 <Link href="/settings/my-account/profile">
-                  <User /> My Profile
+                  <UserIcon /> My Profile
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
@@ -108,15 +119,16 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarGroup>
-          <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start">
-            <Copy /> Copy public page link
+          <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start" onClick={copyToClipboard}>
+            { copied ? <CopyCheck /> : <Copy /> }
+            { !copied ? "Copy public page link" : "Copied public page link" }
           </Button>
-          <Link href="/" className="block my-[2px]">
+          <Link href={`https://mycal.lindritsulaj.com/${username}`} className="block my-[2px]">
             <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start">
               <ExternalLink /> View public page
             </Button>
           </Link>
-          <Link href="/" className="block my-[2px]">
+          <Link href="/settings/my-account/general" className="block my-[2px]">
             <Button variant="ghost" className="w-full hover:bg-sidebar-accent justify-start">
               <Settings /> Settings
             </Button>

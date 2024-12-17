@@ -9,6 +9,10 @@ import { redirect } from 'next/navigation'
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser();
 
+  if (!user) {
+    redirect('/log-in')
+  }
+
   const conditions = [
     !user?.timezone,
     !user?.username,
@@ -21,7 +25,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar username={user.username!} />
       <main className='w-full'>
         <DashboardNavbar />
         {children}
